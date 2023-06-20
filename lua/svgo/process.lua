@@ -1,3 +1,4 @@
+local Util = require'svgo.util'
 local uv = vim.loop
 
 local M = {}
@@ -12,12 +13,6 @@ local function cat_to(t)
       end
     end
   end
-end
-
----@param lines string[]
----@param sep string|nil
-local function join(lines, sep)
-  return table.concat(lines, sep or '\n')
 end
 
 ---@param cmd string
@@ -47,7 +42,7 @@ function M.spawn(cmd, args, cb)
     if not uv.is_closing(stdout) then uv.close(stdout) end
     if not uv.is_closing(stderr) then uv.close(stderr) end
     vim.schedule(function()
-      cb(join(stderr_results), join(stdout_results))
+      cb(Util.join(stderr_results), Util.join(stdout_results))
     end)
   end)
 
