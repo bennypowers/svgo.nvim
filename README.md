@@ -1,3 +1,5 @@
+![Am Yisrael Chai - עם ישראל חי](https://bennypowers.dev/assets/flag.am.yisrael.chai.png)
+
 # svgo.nvim 🗜️
 
 Run [svgo][svgo] on the current buffer or a string.
