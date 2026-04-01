@@ -21,22 +21,19 @@ local function get_args(opts, content)
 end
 
 function M.setup(opts)
-  user_opts = vim.tbl_extend('force', user_opts, opts)
-  vim.api.nvim_create_user_command('Svgo', function(args)
-    local text = args.fargs[1]
-    local cb
-    if args.range == 2 then
-      text = Util.join(vim.api.nvim_buf_get_lines(0, args.line1 - 1, args.line2, false))
-      cb = function(optimized)
-        vim.api.nvim_buf_set_lines(0, args.line1 - 1, args.line2, false, vim.split(optimized, '\n'))
-      end
+  user_opts = vim.tbl_extend('force', user_opts, opts or {})
+end
+
+function M.optimize(args)
+  local text = args.fargs[1]
+  local cb
+  if args.range == 2 then
+    text = Util.join(vim.api.nvim_buf_get_lines(0, args.line1 - 1, args.line2, false))
+    cb = function(optimized)
+      vim.api.nvim_buf_set_lines(0, args.line1 - 1, args.line2, false, vim.split(optimized, '\n'))
     end
-    M.svgo(user_opts, text, cb)
-  end, {
-    nargs = '?',
-    range = true,
-    desc = 'Optimize SVG',
-  })
+  end
+  M.svgo(user_opts, text, cb)
 end
 
 function M.svgo(opts, svg_string, cb)
